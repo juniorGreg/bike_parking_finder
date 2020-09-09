@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     "storages",
     'django.contrib.sites',
-    'django.contrib.sitemaps'
+    'django.contrib.sitemaps',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -76,9 +77,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bike_parking_finder.wsgi.application'
 
+SITE_ID = 1
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR,'db.sqlite3'),
+
+    }
+}
 
 #The database have to have GIS capability
 import dj_database_url

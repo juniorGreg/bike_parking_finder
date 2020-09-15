@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 
 # Create your models here.
 class BikeParking(models.Model):
-    id = models.SlugField(null=False, unique=True)
+    slug = models.SlugField(unique=True, null=True)
     name = models.CharField(max_length=400)
     capacity = models.PositiveIntegerField(default=1)
     indoor = models.BooleanField(default=False)

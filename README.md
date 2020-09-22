@@ -1,6 +1,6 @@
 # Bike Parking Finder
 
-\* **This is a clone on BikeParkingFinder. I reread it with DJango and PostGIS**
+\* **This is a clone of BikeParkingFinder. I rewrite it with DJango and PostGIS**
 
 I presently live in Montreal and I use a bike for commuting. I realised while I was searching for a place to park my bike that car owners have apps to help them to find a parking. I searched for equivalent for bike parking places and I found many apps but not for Montreal. However, the city of Montreal have open data on the position on some parking places for bike (bike hoops) at this web page: http://donnees.ville.montreal.qc.ca/dataset/arceaux-velos. Those data are interesting but incomplete. With reflection, I found the idea to complete and update the data on bike parking places with the help of people via a web page and a mobile app. I know that is not a new idea. It was done for others cites, but I think that Montreal need a thing like that. So, this project is a tentative to make something useful for bike commuters.
 

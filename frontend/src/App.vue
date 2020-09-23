@@ -8,30 +8,64 @@
       </div>
 
     </section>
-    <Map>
+    <LMap :markers="this.bike_parkings" :lat="this.lat" :long="this.long">
 
   </div>
 </template>
 
 <script>
 
-import Map from "./components/Map.vue"
+import LMap from "./components/LMap.vue"
+import axios from 'axios'
+
+axios.defaults.xsrfHeaderName = "X-CSRFToken"
+axios.defaults.xsrfCookieName = 'csrftoken'
+
 
 
 export default {
   name: 'App',
   components : {
-    Map
+    LMap
+  },
+  data: function() {
+    return {
+        bike_parkings: [],
+        lat: 45.501688,
+        long: -73.567256
+      }
+  },
+  methods: {
+    getBikeParkings: function(){
+      axios.get('/api/bike_parkings/2').then(response=>{
+        this.bike_parkings = response.data
+      })
+    },
+    getLocation: function(){
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      }
+    },
+    showPosition: function(position){
+      this.lat= position.coords.latitude;
+      this.long=position.coords.longitude;
+    }
+  },
+  mounted: function() {
+    this.getLocation();
+    this.getBikeParkings();
   }
 
 }
 </script>
 
 <style lang="scss">
+@import "~bulma/bulma";
   html{
     height: 100vh;
   }
   body {
+    background-color: $warning;
     min-height: 100vh;
     width: 100%;
   }

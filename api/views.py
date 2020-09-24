@@ -12,8 +12,11 @@ def index(request):
 
 
 @api_view(['GET'])
-def bike_parkings(request, distance=5):
-    point = Point(-73.567256, 45.5016889)
-    bike_parkings = BikeParking.objects.filter(position__distance_lte=(point, D(km=distance)))
+def bike_parkings(request):
+    distance = float(request.GET.get("radius", "5000"))
+    lat = float(request.GET.get("lng", '45.5016889'))
+    lng = float(request.GET.get("lat", "-73.567256"))
+    point = Point(lat, lng)
+    bike_parkings = BikeParking.objects.filter(position__distance_lte=(point, D(m=distance)))
     serializer = BikeParkingSerializer(bike_parkings, many=True)
     return Response(serializer.data)

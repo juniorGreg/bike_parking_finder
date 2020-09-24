@@ -16,7 +16,7 @@ export default {
       lmarkers: []
     }
   },
-  props: ['markers', "lat", "long"],
+  props: ['markers', "coords", "radius"],
   mounted: function() {
     console.log(this.markers);
     L.Icon.Default.imagePath = '/static/';
@@ -25,20 +25,42 @@ export default {
       zoom: 13}
     );
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-    this.center = L.marker([this.lat, this.long]).addTo(this.map);
+    this.center = L.circle(this.coords, {radius: this.radius}).addTo(this.map);
+
+    this.map.on("click", this.map_click);
+  },
+  methods: {
+    map_click: function(e){
+      this.$emit("mapClick", [e.latlng.lat, e.latlng.lng]);
+      console.log(e.latlng.lat);
+    }
   },
   watch: {
     markers: function(){
       console.log("update");
       let map = this.map;
-      function updateBikeParking(marker, index){
-        L.marker([marker.position.coordinates[1], marker.position.coordinates[0]]).addTo(map);
+      let lmarkers = this.lmarkers;
+
+      this.lmarkers.forEach(function(lmarker, index){
+        map.removeLayer(lmarker);
+      });
+
+      this.lmarkers.splice(0, this.lmarkers.length);
+
+      function updateMarkers(marker, index){
+        let lmarker = L.marker([marker.position.coordinates[1], marker.position.coordinates[0]]).addTo(map);
+        lmarkers.push(lmarker);
       }
 
-      this.markers.forEach(updateBikeParking);
+      this.markers.forEach(updateMarkers);
     },
-    lat: function(){
-      this.center.setLatLng([this.lat, this.long]);
+    coords: function(){
+      this.center.setLatLng(this.coords);
+      this.map.setView(this.coords);
+    },
+    radius: function(){
+      console.log(this.radius);
+      this.center.setRadius(this.radius);
     }
   }
 

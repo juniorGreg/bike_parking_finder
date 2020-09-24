@@ -8,7 +8,7 @@
       </div>
 
     </section>
-    <LMap :markers="this.bike_parkings" :lat="this.lat" :long="this.long">
+    <LMap :radius="this.radius" :markers="this.bike_parkings" :coords="this.coords" @mapClick="updateCoords">
 
   </div>
 </template>
@@ -31,13 +31,18 @@ export default {
   data: function() {
     return {
         bike_parkings: [],
-        lat: 45.501688,
-        long: -73.567256
+        coords: [45.501688, -73.567256],
+        radius: 500
       }
   },
+  watch: {
+    coords: function(){
+      this.getBikeParkings(this.coords[0], this.coords[1]);
+    }
+  },
   methods: {
-    getBikeParkings: function(){
-      axios.get('/api/bike_parkings/2').then(response=>{
+    getBikeParkings: function(lat, lng){
+      axios.get('/api/bike_parkings?radius='+this.radius+'&lat='+lat+'&lng='+lng).then(response=>{
         this.bike_parkings = response.data
       })
     },
@@ -47,13 +52,18 @@ export default {
       }
     },
     showPosition: function(position){
-      this.lat= position.coords.latitude;
-      this.long=position.coords.longitude;
+      let lat= position.coords.latitude;
+      let lng= position.coords.longitude;
+      this.coords = [lat, lng];
+      //this.getBikeParkings(lat, lng);
+    },
+    updateCoords: function(e) {
+      this.coords = e;
     }
   },
   mounted: function() {
     this.getLocation();
-    this.getBikeParkings();
+    //this.getBikeParkings();
   }
 
 }

@@ -12,5 +12,8 @@
   <body>
     <div id="app"></div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
+    <script type="text/javascript">
+        L.Icon.Default.imagePath = "{{ static_url }}";
+    </script>
   </body>
 </html>

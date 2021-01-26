@@ -8,7 +8,7 @@
       </div>
 
     </section>
-    <LMap :radius="this.radius" :markers="this.bike_parkings" :coords="this.coords" @mapClick="updateCoords">
+    <LMap></LMap>
 
   </div>
 </template>
@@ -21,6 +21,7 @@ import axios from 'axios'
 axios.defaults.xsrfHeaderName = "X-CSRFToken"
 axios.defaults.xsrfCookieName = 'csrftoken'
 
+import { mapState , mapMutations , mapActions } from 'vuex';
 
 
 export default {
@@ -28,42 +29,21 @@ export default {
   components : {
     LMap
   },
-  data: function() {
-    return {
-        bike_parkings: [],
-        coords: [45.501688, -73.567256],
-        radius: 500
-      }
+
+  computed: {
+      ...mapActions({
+
+      })
   },
+
   watch: {
-    coords: function(){
-      this.getBikeParkings(this.coords[0], this.coords[1]);
-    }
+
   },
   methods: {
-    getBikeParkings: function(lat, lng){
-      axios.get('/api/bike_parkings?radius='+this.radius+'&lat='+lat+'&lng='+lng).then(response=>{
-        this.bike_parkings = response.data
-      })
-    },
-    getLocation: function(){
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(this.showPosition);
-      }
-    },
-    showPosition: function(position){
-      let lat= position.coords.latitude;
-      let lng= position.coords.longitude;
-      this.coords = [lat, lng];
-      //this.getBikeParkings(lat, lng);
-    },
-    updateCoords: function(e) {
-      this.coords = e;
-    }
+
   },
   mounted: function() {
-    this.getLocation();
-    //this.getBikeParkings();
+
   }
 
 }

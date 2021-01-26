@@ -7,7 +7,7 @@
 
 <script>
 import L from 'leaflet';
-
+import { mapState , mapMutations , mapActions } from 'vuex';
 
 export default {
   name: "l-map",
@@ -16,12 +16,20 @@ export default {
       lmarkers: []
     }
   },
-  props: ['markers', "coords", "radius"],
+
+  computed: {
+      ...mapState([
+        "coords",
+        "bike_parkings",
+        "radius"
+      ])
+  },
+
   mounted: function() {
     console.log(this.markers);
-    L.Icon.Default.imagePath = '/static/';
+
     this.map = L.map('map', {
-      center: [45.5016889, -73.567256],
+      center: this.coords,
       zoom: 13}
     );
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
@@ -30,8 +38,17 @@ export default {
     this.map.on("click", this.map_click);
   },
   methods: {
+    ...mapActions([
+      "getLocation",
+      "getBikeParkings"
+    ]),
+
+    ...mapMutations([
+        "SET_COORDS"
+    ]),
+
     map_click: function(e){
-      this.$emit("mapClick", [e.latlng.lat, e.latlng.lng]);
+      this.SET_COORDS([e.latlng.lat, e.latlng.lng]);
       console.log(e.latlng.lat);
     }
   },
@@ -54,14 +71,7 @@ export default {
 
       this.markers.forEach(updateMarkers);
     },
-    coords: function(){
-      this.center.setLatLng(this.coords);
-      this.map.setView(this.coords);
-    },
-    radius: function(){
-      console.log(this.radius);
-      this.center.setRadius(this.radius);
-    }
+
   }
 
 }

@@ -5,10 +5,13 @@ from rest_framework.response import Response
 from .serializers import BikeParkingSerializer
 from django.contrib.gis.measure import Distance, D
 from django.contrib.gis.geos import Point
+from django.conf import settings
 
 # Create your views here.
 def index(request):
-    return render(request, "api/index.html")
+    context = {"static_url": settings.STATIC_URL}
+    print(context)
+    return render(request, "api/index.html", context)
 
 
 @api_view(['GET'])

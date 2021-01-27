@@ -13,7 +13,11 @@ export default {
   name: "l-map",
   data: function(){
     return {
-      lmarkers: []
+      lmarkers: [],
+      center: null,
+      map: null,
+      tileLayer: null,
+      parkingsLayer: null
     }
   },
 
@@ -22,20 +26,30 @@ export default {
         "coords",
         "bike_parkings",
         "radius"
-      ])
+      ]),
+
+      circle: function(){
+        return L.circle(this.coords, this.radius)
+      }
   },
 
   mounted: function() {
     console.log(this.markers);
-
+    this.center = L.circle(this.coords, {radius: this.radius})
     this.map = L.map('map', {
       center: this.coords,
-      zoom: 13}
+      zoom: 16}
     );
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-    this.center = L.circle(this.coords, {radius: this.radius}).addTo(this.map);
+    this.center.addTo(this.map);
+
+    this.parkingsLayer = L.layerGroup(this.lmarkers).addTo(this.map)
 
     this.map.on("click", this.map_click);
+  },
+
+  created: function() {
+    this.getLocation()
   },
   methods: {
     ...mapActions([
@@ -49,27 +63,31 @@ export default {
 
     map_click: function(e){
       this.SET_COORDS([e.latlng.lat, e.latlng.lng]);
-      console.log(e.latlng.lat);
+
     }
   },
   watch: {
-    markers: function(){
-      console.log("update");
-      let map = this.map;
-      let lmarkers = this.lmarkers;
+    bike_parkings: function(){
 
-      this.lmarkers.forEach(function(lmarker, index){
-        map.removeLayer(lmarker);
-      });
 
       this.lmarkers.splice(0, this.lmarkers.length);
 
-      function updateMarkers(marker, index){
-        let lmarker = L.marker([marker.position.coordinates[1], marker.position.coordinates[0]]).addTo(map);
-        lmarkers.push(lmarker);
-      }
+      this.parkingsLayer.clearLayers();
+      this.bike_parkings.forEach((marker, index) => {
+        const lmarker = L.marker([marker.position.coordinates[1], marker.position.coordinates[0]]);
+        //this.lmarkers.push(lmarker);
+        this.parkingsLayer.addLayer(lmarker)
+      });
 
-      this.markers.forEach(updateMarkers);
+
+    },
+
+    coords: function(){
+      console.log("coord");
+      this.map.panTo(this.coords)
+      this.center.setLatLng(this.coords)
+      this.getBikeParkings()
+
     },
 
   }

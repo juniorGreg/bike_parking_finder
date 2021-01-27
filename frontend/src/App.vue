@@ -16,10 +16,7 @@
 <script>
 
 import LMap from "./components/LMap.vue"
-import axios from 'axios'
 
-axios.defaults.xsrfHeaderName = "X-CSRFToken"
-axios.defaults.xsrfCookieName = 'csrftoken'
 
 import { mapState , mapMutations , mapActions } from 'vuex';
 

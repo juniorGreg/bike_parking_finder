@@ -1,4 +1,5 @@
 <template>
+
   <div id="map">
 
   </div>
@@ -34,11 +35,11 @@ export default {
   },
 
   mounted: function() {
-    console.log(this.markers);
+
     this.center = L.circle(this.coords, {radius: this.radius})
     this.map = L.map('map', {
       center: this.coords,
-      zoom: 16}
+      zoom: 15}
     );
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
     this.center.addTo(this.map);
@@ -46,10 +47,11 @@ export default {
     this.parkingsLayer = L.layerGroup(this.lmarkers).addTo(this.map)
 
     this.map.on("click", this.map_click);
+    this.getLocation();
   },
 
   created: function() {
-    this.getLocation()
+    //this.getLocation()
   },
   methods: {
     ...mapActions([
@@ -96,11 +98,13 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  $margin: 0.4rem;
+  //$margin: 0.4rem;
 
   #map {
-    margin: $margin;
-    height: calc(100% - 2*#{$margin});
-    width: calc(100% - 2*#{$margin});
+    margin: 0;
+    z-index: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
   }
 </style>

@@ -7,10 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main.css' %}">
-    <title>Bike Parking Finder</title>
+    <title>ParkMonBaïk</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <App logo="{% static 'layers.png' %}"></App>
+    </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
     <script type="text/javascript">
         L.Icon.Default.imagePath = "{{ static_url }}";

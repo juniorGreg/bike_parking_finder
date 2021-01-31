@@ -1,11 +1,11 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "private": true,
+  "main": "main.js",
   "scripts": {
-    "serve": "parcel watch src/main.js -d ../static",
-    "build": "parcel build src/main.js -d ../static",
-    "lint": "vue-cli-service lint"
+    "serve": "parcel watch src/main.js -d ../static --public-url=/static/",
+    "build": "parcel build src/main.js -d ../static"
+
   },
   "dependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",
@@ -14,9 +14,6 @@
     "bulma": "^0.9.0",
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-css-only": "^2.1.0",
-    "rollup-plugin-vue": "^6.0.0-beta.10",
     "vue": "^2.6.11",
     "vue2-leaflet": "^2.5.2",
     "vuex": "^3.6.0"
@@ -51,24 +48,18 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
+
+  "alias": {
+    "vue": "./node_modules/vue/dist/vue.common.js"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  "staticFiles": {
+    "staticPath": [
+      {
+        "outDirPattern": "../static",
+        "staticPath": "fonts"
+      }
+    ],
+    "watcherGlob": "**"
+  }
 
 }

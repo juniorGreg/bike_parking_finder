@@ -11,5 +11,8 @@ import store from './store'
 
 new Vue({
   store: store,
-  render: h => h(App),
-}).$mount('#app')
+  el: "#app",
+  components: {
+    App
+  }
+});

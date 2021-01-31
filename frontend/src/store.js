@@ -12,7 +12,10 @@ export default new Vuex.Store({
   state: () => ({
     bike_parkings: [],
     coords: [45.501688, -73.567256],
-    radius: 500
+    radius: 500,
+    is_logged: false,
+    is_login_visible: false
+
   }),
 
   mutations: {
@@ -25,6 +28,12 @@ export default new Vuex.Store({
     },
     SET_RADIUS: (state, new_value) => {
       state.radius = new_value
+    },
+    SET_IS_LOGGED: (state, new_value) => {
+      state.is_logged = new_value
+    },
+    SET_IS_LOGIN_VISIBLE: (state, new_value) => {
+      state.is_login_visible = new_value
     }
   },
   actions: {

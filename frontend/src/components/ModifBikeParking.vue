@@ -3,7 +3,7 @@
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
-        <h2>Créer un compte par courriel</h2>
+        <h2>Modifier un emplacement</h2>
       </div>
     </div>
     <button class="modal-close is-large" aria-label="close"></button>

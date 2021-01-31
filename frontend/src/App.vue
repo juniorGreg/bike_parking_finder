@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar is-success is-bold" role="navigation" aria-label="navigation principale">
+    <nav class="navbar is-black" role="navigation" aria-label="navigation principale">
         <div class="navbar-brand">
           <div class="navbar-item">
             <img :src="logo" alt="Logo de parkmonbaïk">

@@ -7,15 +7,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="shortcut icon" href="{% static 'parkmonbaik_logo.svg' %}">
+
+    <meta name="author" content="Junior Grégoire">
+    <meta name="keywords" content="ParkMonBaïk, vélo, stationnement, arceau, montréal, mtl, bike, bicyclette,">
+
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:site_name" content="ParkMonBaïk">
+    <meta name="twitter:image:alt" content="Logo de ParkMonBaïk">
+
+    <link rel="canonical" href="https://parkmonbaik.xyz">
+
+    <meta property="og:title" content="ParkMonBaïk" />
+    <meta property="og:url" content="https://parkmonbaik.xyz" />
+    <meta property="og:image" content="{% static 'parkmonbaik.svg' %}" />
+    <meta name="description" property="og:description" content="Bienvenue sur le site de ParkMonBaïk ! C'est un site web qui permet de chercher et d'ajouter des emplacements pour stationner votre vélo à Montréal"/>
+
+
     <title>ParkMonBaïk</title>
   </head>
   <body>
     <div id="app">
-      <App logo="{% static 'layers.png' %}"></App>
+      <App logo="{% static 'parkmonbaik.svg' %}"></App>
     </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
     <script type="text/javascript">
         L.Icon.Default.imagePath = "{{ static_url }}";
     </script>
+    <noscript>
+
+    </noscript>
   </body>
 </html>

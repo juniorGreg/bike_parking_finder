@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar is-black" role="navigation" aria-label="navigation principale">
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="navigation principale">
         <div class="navbar-brand">
           <div class="navbar-item">
             <img :src="logo" alt="Logo de parkmonbaïk">
@@ -13,6 +13,19 @@
 
         </div>
         <div id="navbarParkMonBaik" class="navbar-menu" :class="{'is-active': is_navbar_visible}">
+          <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">Mode temps réel</a>
+              <div class="navbar-dropdown">
+                <div class="navbar-item">
+                  <div class="field">
+                    <input id="modeRealTime" type="checkbox" name="modeRealTime" class="switch">
+                    <label for="modeRealTime">Off</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="navbar-end">
             <div class="navbar-item">
               <button @click="loginAction" class="button is-success">{{login_button_text}}</button>

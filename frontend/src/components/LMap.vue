@@ -103,7 +103,7 @@ export default {
   #map {
     margin: 0;
     z-index: 0;
-    height: 100%;
+    height: calc(100vh - 3.1rem);
     width: 100%;
     position: fixed;
   }

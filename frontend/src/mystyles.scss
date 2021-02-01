@@ -1,5 +1,11 @@
+$navbar-item-color: lightgrey;
+$navbar-background-color: black;
+$navbar-dropdown-background-color: black;
+$navbar-item-hover-background-color: darkgrey;
+
 @charset "utf-8";
 @import "~bulma/bulma";
+//@import "~bulma-switch/src/sass/index.sass";
 
 html {
   height: 100vh;
@@ -11,6 +17,6 @@ body {
   width: 100%;
 }
 main {
-  height: calc(100vh - 3.5rem);
+  height: 100vh;
   z-index: -1;
 }

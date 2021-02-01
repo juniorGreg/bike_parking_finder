@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class BikeParking(models.Model):
@@ -15,3 +16,12 @@ class BikeParking(models.Model):
 
     def __str__(self):
         return self.name
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    added_bike_parkings = models.ManyToManyField(BikeParking, related_name="added_bike_parking_set")
+    modified_bike_parkings = models.ManyToManyField(BikeParking, related_name="modified_bike_parking_set")
+    score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user)

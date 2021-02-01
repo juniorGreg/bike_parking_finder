@@ -5,13 +5,13 @@
   "scripts": {
     "serve": "parcel watch src/main.js -d ../static --public-url=/static/",
     "build": "parcel build src/main.js -d ../static"
-
   },
   "dependencies": {
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@vue/compiler-sfc": "^3.0.0",
     "axios": "^0.21.1",
     "bulma": "^0.9.0",
+    "bulma-switch": "^2.0.0",
     "core-js": "^3.6.5",
     "leaflet": "^1.7.1",
     "vue": "^2.6.11",
@@ -48,7 +48,6 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
-
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
   },
@@ -61,5 +60,4 @@
     ],
     "watcherGlob": "**"
   }
-
 }

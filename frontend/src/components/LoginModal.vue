@@ -14,7 +14,7 @@
           </div>
 
           <div class="field">
-            <label for="password">Mot de pass: </label>
+            <label for="password">Mot de passe: </label>
             <div class="control">
               <input class="input" type="password" name="password">
             </div>

@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.gis.admin import OSMGeoAdmin
 
-from .models import BikeParking
+from .models import BikeParking, Profile
+
+admin.site.register(Profile)
 
 # Register your models here.
 @admin.register(BikeParking)

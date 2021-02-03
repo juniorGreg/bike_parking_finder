@@ -14,7 +14,8 @@ export default new Vuex.Store({
     coords: [45.501688, -73.567256],
     radius: 500,
     is_logged: false,
-    is_login_visible: false
+    is_login_visible: false,
+    is_register_visible: false
 
   }),
 
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     SET_IS_LOGIN_VISIBLE: (state, new_value) => {
       state.is_login_visible = new_value
+    },
+    SET_IS_REGISTER_VISIBLE: (state, new_value) => {
+      state.is_register_visible = new_value
     }
   },
   actions: {
@@ -56,10 +60,17 @@ export default new Vuex.Store({
       return axios.get('/api/bike_parkings?radius='+context.state.radius+'&lat='+lat+'&lng='+lng).then(response=>{
           context.commit("SET_BIKE_PARKINGS", response.data)
       })
+
+    },
+
+    register: (context, registerForm) => {
+      return axios.post("/auth/register", registerForm).then( response => {
+
+      })
     }
 
-  },
 
+  },
   getters: {
 
   }

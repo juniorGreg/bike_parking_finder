@@ -34,6 +34,7 @@
         </div>
     </nav>
     <LoginModal></LoginModal>
+    <RegisterModal :google_recaptcha_site="google_recaptcha_site"></RegisterModal>
     <main>
 
         <LMap></LMap>
@@ -48,6 +49,7 @@
 
 import LMap from "./components/LMap.vue"
 import LoginModal from "./components/LoginModal.vue"
+import RegisterModal from "./components/RegisterModal.vue"
 
 
 import { mapState , mapMutations , mapActions } from 'vuex';
@@ -55,10 +57,11 @@ import { mapState , mapMutations , mapActions } from 'vuex';
 
 export default {
   name: 'App',
-  props: ["logo"],
+  props: ["logo", "google_recaptcha_site"],
   components : {
     LMap,
-    LoginModal
+    LoginModal,
+    RegisterModal
   },
   data: function(){
     return {

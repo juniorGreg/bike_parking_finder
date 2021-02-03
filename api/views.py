@@ -9,7 +9,7 @@ from django.conf import settings
 
 # Create your views here.
 def index(request):
-    context = {"static_url": settings.STATIC_URL}
+    context = {"static_url": settings.STATIC_URL, "google_recaptcha_site": settings.GOOGLE_RECAPCHAV3_SITE}
     print(context)
     return render(request, "api/index.html", context)
 

@@ -19,6 +19,7 @@ from django.urls import path, include
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
+from dj_rest_auth.registration.views import VerifyEmailView
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
@@ -33,5 +34,6 @@ urlpatterns = [
     path("auth/facebook", FacebookLogin.as_view(), name="fb_login"),
     path("auth/google", GoogleLogin.as_view(), name="g_login"),
     path('auth/register', include('dj_rest_auth.registration.urls'), name="register"),
+    path("auth/confirm-email", VerifyEmailView.as_view(), name="confirm_email")
 
 ]

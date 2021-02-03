@@ -4,27 +4,30 @@
     <div class="modal-content is-success">
       <div class="box is-success">
 
-          <h2 class="title is-3">Login</h2>
+          <h2 class="title is-3">S'authentifier</h2>
 
           <div class="field">
-            <label for="email">Courriel: </label>
+            <label for="email">Courriel : </label>
             <div class="control">
               <input class="input" type="email" name="email" placeholder="armand.guidon@gmail.com">
             </div>
           </div>
 
           <div class="field">
-            <label for="password">Mot de passe: </label>
+            <label for="password">Mot de passe : </label>
             <div class="control">
               <input class="input" type="password" name="password">
             </div>
           </div>
 
-          <div class="field">
-            <div class="control">
-              <button type="button" name="button" class="button is-success">Login</button>
-            </div>
+          <div class="buttons">
+              <button @click="showRegisterModal" type="button" name="button" class="button is-info">S'incrire</button>
+              <button type="button" name="button" class="button is-success">S'authentifier</button>
+
           </div>
+          <button class="button is-danger is-fullwidth" type="button" name="button">Google</button>
+          <br>
+          <button class="button is-link is-fullwidth" type="button" name="button">Facebook</button>
 
       </div>
 
@@ -44,8 +47,14 @@ export default {
   },
   methods: {
     ...mapMutations([
-      "SET_IS_LOGIN_VISIBLE"
-    ])
+      "SET_IS_LOGIN_VISIBLE",
+      "SET_IS_REGISTER_VISIBLE"
+    ]),
+
+    showRegisterModal: function(){
+      this.SET_IS_LOGIN_VISIBLE(false)
+      this.SET_IS_REGISTER_VISIBLE(true)
+    }
   }
 }
 </script>

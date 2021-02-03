@@ -9,6 +9,8 @@ class BikeParking(models.Model):
     indoor = models.BooleanField(default=False)
     description = models.TextField(max_length=1000, null=True, blank=True)
     position = models.PointField()
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     @property
     def lat_lng(self):
@@ -22,6 +24,9 @@ class Profile(models.Model):
     added_bike_parkings = models.ManyToManyField(BikeParking, related_name="added_bike_parking_set")
     modified_bike_parkings = models.ManyToManyField(BikeParking, related_name="modified_bike_parking_set")
     score = models.IntegerField(default=0)
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.user)

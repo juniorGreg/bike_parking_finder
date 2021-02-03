@@ -26,8 +26,11 @@ SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ["DEBUG"] == 'TRUE'
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "moisidev.xyz", "parkmonbaik.xyz"]
 
+GOOGLE_RECAPCHAV3_SECRET=os.environ["GOOGLE_RECAPCHAV3_SECRET"]
+
+GOOGLE_RECAPCHAV3_SITE=os.environ["GOOGLE_RECAPCHAV3_SITE"]
 
 # Application definition
 
@@ -43,7 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'dj_rest_auth.registration',
-    
+
     "api.apps.ApiConfig",
     "storages",
     'django.contrib.sites',
@@ -89,6 +92,19 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bike_parking_finder.wsgi.application'
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 2592000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES']= (
+            'rest_framework.renderers.JSONRenderer',
+        )
 
 SITE_ID = 1
 
@@ -146,6 +162,17 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+#Email settings
+DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_ADMIN = os.environ['EMAIL_ADMIN']
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+ADMINS = [('JGregoire', EMAIL_ADMIN)]
 
 
 # Static files (CSS, JavaScript, Images)

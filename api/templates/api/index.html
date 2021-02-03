@@ -24,13 +24,14 @@
     <meta property="og:url" content="https://parkmonbaik.xyz" />
     <meta property="og:image" content="{% static 'parkmonbaik.svg' %}" />
     <meta name="description" property="og:description" content="Bienvenue sur le site de ParkMonBaïk ! C'est un site web qui permet de chercher et d'ajouter des emplacements pour stationner votre vélo à Montréal"/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 
 
     <title>ParkMonBaïk</title>
   </head>
   <body>
     <div id="app">
-      <App logo="{% static 'parkmonbaik.svg' %}"></App>
+      <App logo="{% static 'parkmonbaik.svg' %}" google_recaptcha_site="{{ google_recaptcha_site }}"></App>
     </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
     <script type="text/javascript">

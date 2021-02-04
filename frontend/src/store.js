@@ -15,7 +15,8 @@ export default new Vuex.Store({
     radius: 500,
     is_logged: false,
     is_login_visible: false,
-    is_register_visible: false
+    is_register_visible: false,
+    register_error_message: ""
 
   }),
 
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     SET_IS_REGISTER_VISIBLE: (state, new_value) => {
       state.is_register_visible = new_value
+    },
+    SET_REGISTER_ERROR_MESSAGE: (state, new_value) => {
+      state.register_error_message = new_value
     }
   },
   actions: {
@@ -65,7 +69,11 @@ export default new Vuex.Store({
 
     register: (context, registerForm) => {
       return axios.post("/auth/register", registerForm).then( response => {
-
+        console.log(response.data)
+        context.commit("SET_REGISTER_ERROR_MESSAGE", "")
+      }).catch(error => {
+        console.log(error.response.data)
+        context.commit("SET_REGISTER_ERROR_MESSAGE", error.response.data)
       })
     }
 

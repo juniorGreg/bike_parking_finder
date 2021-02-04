@@ -10,6 +10,13 @@
 import L from 'leaflet';
 import { mapState , mapMutations , mapActions } from 'vuex';
 
+import MarkerPopup from "./MarkerPopup.vue"
+
+import Vue from "vue";
+
+var MarkerPopupComponent = Vue.extend(MarkerPopup)
+
+
 export default {
   name: "l-map",
   data: function(){
@@ -20,6 +27,10 @@ export default {
       tileLayer: null,
       parkingsLayer: null
     }
+  },
+
+  components: {
+    MarkerPopup
   },
 
   computed: {
@@ -43,6 +54,8 @@ export default {
     );
     this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
     this.center.addTo(this.map);
+
+
 
     this.parkingsLayer = L.layerGroup(this.lmarkers).addTo(this.map)
 
@@ -77,6 +90,17 @@ export default {
       this.parkingsLayer.clearLayers();
       this.bike_parkings.forEach((marker, index) => {
         const lmarker = L.marker([marker.position.coordinates[1], marker.position.coordinates[0]]);
+
+        var markerPopupInstance = new MarkerPopupComponent({
+          propsData: {"marker": marker}
+        })
+
+        markerPopupInstance.$mount()
+        //this.$refs.container.appendChild(markerPopupInstance.$el)
+
+
+
+        lmarker.bindPopup(markerPopupInstance.popup)
         //this.lmarkers.push(lmarker);
         this.parkingsLayer.addLayer(lmarker)
       });

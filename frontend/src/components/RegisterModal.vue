@@ -38,6 +38,9 @@
                     data-callback='initRegistration'
                     data-action='submit'>S'inscrire</button>
         </form>
+        <div v-if="register_error_message" class="notification is-danger">
+          {{ register_error_message }}
+        </div>
       </div>
     </div>
     <button @click="hideRegisterModal" class="modal-close is-large" aria-label="close"></button>
@@ -53,7 +56,8 @@ export default {
   props: ["google_recaptcha_site"],
   computed: {
     ...mapState([
-      "is_register_visible"
+      "is_register_visible",
+      "register_error_message"
     ]),
   },
 
@@ -114,7 +118,7 @@ export default {
   },
 
   mounted: function() {
-    window.register = this.register;
+    window.initRegistration = this.initRegistration
 
   },
 

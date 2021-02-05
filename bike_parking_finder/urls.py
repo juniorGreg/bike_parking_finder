@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.account.views import confirm_email
 from dj_rest_auth.registration.views import SocialLoginView
-from dj_rest_auth.registration.views import VerifyEmailView
+from dj_rest_auth.registration.views import VerifyEmailView, RegisterView
 
 
 class FacebookLogin(SocialLoginView):
@@ -34,6 +35,9 @@ urlpatterns = [
     path('auth/', include('dj_rest_auth.urls'), name="e_login"),
     path("auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
     path("auth/google/", GoogleLogin.as_view(), name="g_login"),
-    path('auth/register/', include('dj_rest_auth.registration.urls'), name="register"),
-    path("auth/register/account-confirm-email/", VerifyEmailView.as_view(), name="account-confirm-email")
+    path('auth/register/', RegisterView.as_view(), name="register"),
+    path('auth/register/verify-email/', VerifyEmailView.as_view(), name="verify_email"),
+    re_path(r'^auth/register/account-confirm-email/(?P<key>[-:\w]+)/$', confirm_email,
+        name='account_confirm_email'),
+
 ]

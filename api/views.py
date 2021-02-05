@@ -31,3 +31,6 @@ def bike_parkings(request):
     bike_parkings = BikeParking.objects.filter(position__distance_lte=(point, D(m=distance)))
     serializer = BikeParkingSerializer(bike_parkings, many=True)
     return Response(serializer.data)
+
+def confirm_email(request):
+    return render(request, "api/email_confirmation.html")

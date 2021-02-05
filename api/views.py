@@ -2,10 +2,18 @@ from django.shortcuts import render
 from .models import BikeParking
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 from .serializers import BikeParkingSerializer
 from django.contrib.gis.measure import Distance, D
 from django.contrib.gis.geos import Point
 from django.conf import settings
+
+from allauth.account import app_settings as allauth_settings
+from dj_rest_auth.utils import jwt_encode
+from allauth.account.utils import complete_signup
+from dj_rest_auth.app_settings import create_token
+
+from dj_rest_auth.registration.views import RegisterView
 
 # Create your views here.
 def index(request):

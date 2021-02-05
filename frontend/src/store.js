@@ -68,7 +68,7 @@ export default new Vuex.Store({
     },
 
     register: (context, registerForm) => {
-      return axios.post("/auth/register", registerForm).then( response => {
+      return axios.post("/auth/register/", registerForm).then( response => {
         console.log(response.data)
         context.commit("SET_REGISTER_ERROR_MESSAGE", "")
       }).catch(error => {

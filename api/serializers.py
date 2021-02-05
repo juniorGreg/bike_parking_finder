@@ -13,22 +13,19 @@ class BikeParkingSerializer(serializers.ModelSerializer):
 
 class CustomRegisterSerializer(RegisterSerializer):
 
-    def save(self, request):
-        data = request.data
+    token = serializers.CharField()
 
+    def validate_token(self, token):
         token_data = {
             "secret": settings.GOOGLE_RECAPCHAV3_SECRET,
-            "response": data["token"]
+            "response": token
         }
+
         token_verification_request = requests.post("https://www.google.com/recaptcha/api/siteverify", data=token_data)
         if token_verification_request.status_code == 200:
             google_response = token_verification_request.json()
             print(google_response)
             if google_response["success"]:
-                del request.data["token"]
-                super(CustomRegisterSerializer, self).save(request)
-            else:
-                raise serializers.ValidationError("token is not valid")
-        else:
-            print("oki")
-            raise serializers.ValidationError("Token validation failed")
+                return token
+
+        raise serializers.ValidationError("You are a robot.")

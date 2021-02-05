@@ -149,8 +149,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'api.serializers.CustomRegisterSerializer',
-
+    'REGISTER_SERIALIZER': 'api.serializers.CustomRegisterSerializer'
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

@@ -32,5 +32,8 @@ def bike_parkings(request):
     serializer = BikeParkingSerializer(bike_parkings, many=True)
     return Response(serializer.data)
 
-def confirm_email(request):
-    return render(request, "api/email_confirmation.html")
+def confirm_email(request, key):
+    context = {
+        "key": key
+    }
+    return render(request, "api/email_confirmation.html", context)

@@ -160,6 +160,11 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "confirm_email"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "confirm_email"
 
+google = { 'SCOPE': ['email'], 'AUTH_PARAMS': { 'access_type': 'online' }}
+
+
+SOCIALACCOUNT_PROVIDERS = {'facebook': {}, 'google':google }
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

@@ -18,7 +18,8 @@ from django.urls import path, include, re_path
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
-from allauth.account.views import confirm_email
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from api.views import confirm_email
 from dj_rest_auth.registration.views import SocialLoginView
 from dj_rest_auth.registration.views import VerifyEmailView, RegisterView
 
@@ -27,7 +28,10 @@ class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
 class GoogleLogin(SocialLoginView):
+    authentication_classes = [] # disable authentication
     adapter_class = GoogleOAuth2Adapter
+    callback_url = "https://moisidev.xyz"
+    client_class = OAuth2Client
 
 urlpatterns = [
     path('bikeadmin/', admin.site.urls),

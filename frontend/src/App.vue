@@ -78,17 +78,18 @@ export default {
       }else {
           return "Login"
       }
-
-
     }
   },
   methods: {
     ...mapMutations([
       "SET_IS_LOGIN_VISIBLE"
     ]),
+    ...mapActions([
+      "logout"
+    ]),
     loginAction: function(){
       if(this.is_logged){
-        console.log("logout")
+        this.logout()
       }else{
         this.SET_IS_LOGIN_VISIBLE(true)
       }

@@ -1,10 +1,32 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="fr" dir="ltr">
   <head>
+
     <meta charset="utf-8">
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'main_email.css' %}">
+    <link rel="shortcut icon" href="{% static 'parkmonbaik_logo.svg' %}">
+    <title>ParkMonBaïk - Confirmation de Courriel</title>
+
+    <meta name="author" content="Junior Grégoire">
+    <meta name="keywords" content="ParkMonBaïk, vélo, stationnement, arceau, montréal, mtl, bike, bicyclette,">
+
+    <meta property="og:type" content="website">
+
+
+
+    <meta name="description" property="og:description" content="Bienvenue sur le site de ParkMonBaïk ! C'est un site web qui permet de chercher et d'ajouter des emplacements pour stationner votre vélo à Montréal"/>
+
   </head>
   <body>
-    <h1>Email Confirmation</h1>
+    <div id="app">
+      <App-Email logo="{% static 'parkmonbaik.svg' %}" email_key={{key}}></App-Email>
+    </div>
+    <script type="text/javascript" src="{% static 'main_email.js' %}"></script>
+
   </body>
 </html>

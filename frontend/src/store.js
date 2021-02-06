@@ -16,7 +16,8 @@ export default new Vuex.Store({
     is_logged: false,
     is_login_visible: false,
     is_register_visible: false,
-    register_error_message: ""
+    register_error_message: "",
+    token_key: null
 
   }),
 
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     SET_REGISTER_ERROR_MESSAGE: (state, new_value) => {
       state.register_error_message = new_value
+    },
+    SET_TOKEN_KEY: (state, new_value) => {
+      state.token_key = new_value
     }
   },
   actions: {
@@ -75,11 +79,42 @@ export default new Vuex.Store({
         console.log(error.response.data)
         context.commit("SET_REGISTER_ERROR_MESSAGE", error.response.data)
       })
-    }
+    },
+
+    login: (context, loginForm) => {
+      return axios.post("/auth/login/", loginForm).then( response => {
+        context.commit("SET_IS_LOGGED", true)
+        context.commit("SET_TOKEN_KEY", response.data.key)
+      })
+    },
+
+    loginGoogle: (context)=> {
+      return axios.post("/auth/google/").then( response => {
+        context.commit("SET_IS_LOGGED", true)
+        context.commit("SET_TOKEN_KEY", response.data.key)
+      })
+    },
+
+    logout: (context) => {
+      return axios.post("/auth/logout/",null,context.getters.headers).then(response => {
+        context.commit("SET_IS_LOGGED", false)
+        context.commit("SET_TOKEN_KEY", null)
+      })
+    },
+
+
 
 
   },
   getters: {
-
+      headers: state => {
+        if(state.is_logged){
+          return {
+            'Authorization': 'TOKEN ' + state.token_key
+          }
+        }else {
+          return {}
+        }
+      }
   }
 })

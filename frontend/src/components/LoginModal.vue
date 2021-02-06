@@ -9,25 +9,29 @@
           <div class="field">
             <label for="email">Courriel : </label>
             <div class="control">
-              <input class="input" type="email" name="email" placeholder="armand.guidon@gmail.com">
+              <input class="input" type="email" name="email" placeholder="armand.guidon@gmail.com" v-model="email">
             </div>
           </div>
 
           <div class="field">
             <label for="password">Mot de passe : </label>
             <div class="control">
-              <input class="input" type="password" name="password">
+              <input class="input" type="password" name="password" v-model="password">
             </div>
           </div>
+          <div v-if="login_error_message" class="notification is-danger">
+            {{ login_error_message }}
+          </div>
+
 
           <div class="buttons">
-              <button @click="showRegisterModal" type="button" name="button" class="button is-info">S'incrire</button>
-              <button type="button" name="button" class="button is-success">S'authentifier</button>
-
+              <button @click="initLogin" type="button" name="button" class="button is-success">S'authentifier</button>
+              <button @click="showRegisterModal" type="button" name="button" class="button is-info">S'inscrire</button>
+              <button type="button" class="button is-text">Oublie de mot de passe ?</button>
           </div>
-          <button class="button is-danger is-fullwidth" type="button" name="button">Google</button>
+          <button @click="loginGoogle" class="button is-danger is-fullwidth" type="button" name="button">S'authentifier avec Google</button>
           <br>
-          <button class="button is-link is-fullwidth" type="button" name="button">Facebook</button>
+          <button class="button is-link is-fullwidth" type="button" name="button">S'authentifier avec Facebook</button>
 
       </div>
 
@@ -40,6 +44,13 @@
 <script>
 import { mapState , mapMutations , mapActions } from 'vuex';
 export default {
+  data: function(){
+    return {
+      email: "",
+      password: "",
+      login_error_message: ""
+    }
+  },
   computed: {
     ...mapState([
       "is_login_visible"
@@ -50,6 +61,27 @@ export default {
       "SET_IS_LOGIN_VISIBLE",
       "SET_IS_REGISTER_VISIBLE"
     ]),
+
+    ...mapActions([
+      "login",
+      "loginGoogle"
+    ]),
+
+    initLogin: function(){
+      const loginForm = {
+        "email": this.email,
+        "password": this.password
+      }
+
+      this.login(loginForm).then(()=>{
+        this.SET_IS_LOGIN_VISIBLE(false)
+        this.email = ""
+        this.password = ""
+        this.login_error_message = "";
+      }).catch(error => {
+        this.login_error_message = "Le mot de passe et/ou le courriel est incorrect."
+      })
+    },
 
     showRegisterModal: function(){
       this.SET_IS_LOGIN_VISIBLE(false)

@@ -106,6 +106,12 @@ if not DEBUG:
             'rest_framework.renderers.JSONRenderer',
         )
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 SITE_ID = 1
 
 # Database
@@ -152,19 +158,23 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'api.serializers.CustomRegisterSerializer'
 }
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "confirm_email"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "confirm_email"
 
-google = { 'SCOPE': ['email'], 'AUTH_PARAMS': { 'access_type': 'online' }}
 
-
-SOCIALACCOUNT_PROVIDERS = {'facebook': {}, 'google':google }
-
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile','email'],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

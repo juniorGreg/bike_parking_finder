@@ -1,5 +1,6 @@
 
 {% load static %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="fr" class="has-navbar-fixed-top">
   <head>
@@ -31,7 +32,10 @@
   </head>
   <body>
     <div id="app">
-      <App logo="{% static 'parkmonbaik.svg' %}" google_recaptcha_site="{{ google_recaptcha_site }}"></App>
+      <App  logo="{% static 'parkmonbaik.svg' %}"
+            google_recaptcha_site="{{ google_recaptcha_site }}"
+            google_login_url="{% provider_login_url 'google' %}"
+            google_code="{{ google_code }}"></App>
     </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
     <script type="text/javascript">

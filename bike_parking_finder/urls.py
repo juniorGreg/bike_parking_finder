@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
-from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter, oauth2_login
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from api.views import confirm_email
 from dj_rest_auth.registration.views import SocialLoginView
@@ -28,17 +28,19 @@ class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
 class GoogleLogin(SocialLoginView):
-    authentication_classes = [] # disable authentication
+    authentication_classes = []
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "https://moisidev.xyz"
+    callback_url = "http://moisidev.xyz/callback/google"
     client_class = OAuth2Client
 
 urlpatterns = [
     path('bikeadmin/', admin.site.urls),
     path('', include('api.urls')),
+
     path('auth/', include('dj_rest_auth.urls'), name="e_login"),
     path("auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
     path("auth/google/", GoogleLogin.as_view(), name="g_login"),
+    path("auth/google/oauth", oauth2_login, name="google_login"),
     path('auth/register/', RegisterView.as_view(), name="register"),
     path('auth/register/verify-email/', VerifyEmailView.as_view(), name="verify_email"),
     re_path(r'^auth/register/account-confirm-email/(?P<key>[-:\w]+)/$', confirm_email,

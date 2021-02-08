@@ -29,7 +29,7 @@
               <button @click="showRegisterModal" type="button" name="button" class="button is-info">S'inscrire</button>
               <button type="button" class="button is-text">Oublie de mot de passe ?</button>
           </div>
-          <button @click="loginGoogle" class="button is-danger is-fullwidth" type="button" name="button">S'authentifier avec Google</button>
+          <a class="button is-danger is-fullwidth" :href="google_login_url" >S'authentifier avec Google</a>
           <br>
           <button class="button is-link is-fullwidth" type="button" name="button">S'authentifier avec Facebook</button>
 
@@ -44,6 +44,7 @@
 <script>
 import { mapState , mapMutations , mapActions } from 'vuex';
 export default {
+  props: ["google_login_url"],
   data: function(){
     return {
       email: "",

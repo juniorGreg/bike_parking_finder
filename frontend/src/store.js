@@ -88,10 +88,12 @@ export default new Vuex.Store({
       })
     },
 
-    loginGoogle: (context)=> {
-      return axios.post("/auth/google/").then( response => {
+    loginGoogle: (context, code)=> {
+      return axios.post("/auth/google/", code).then( response => {
         context.commit("SET_IS_LOGGED", true)
         context.commit("SET_TOKEN_KEY", response.data.key)
+      }).catch(error => {
+        console.log(error.response.data)
       })
     },
 
@@ -102,7 +104,14 @@ export default new Vuex.Store({
       })
     },
 
+    resetPassword: (context, email) => {
+      return axios.post("/auth/password/reset", email).then(() => {
 
+      }).catch(() => {
+
+      })
+
+    }
 
 
   },

@@ -33,7 +33,7 @@
           </div>
         </div>
     </nav>
-    <LoginModal></LoginModal>
+    <LoginModal :google_login_url="google_login_url"></LoginModal>
     <RegisterModal :google_recaptcha_site="google_recaptcha_site"></RegisterModal>
     <main>
 
@@ -57,7 +57,7 @@ import { mapState , mapMutations , mapActions } from 'vuex';
 
 export default {
   name: 'App',
-  props: ["logo", "google_recaptcha_site"],
+  props: ["logo", "google_recaptcha_site", "google_login_url", "google_code"],
   components : {
     LMap,
     LoginModal,
@@ -85,7 +85,8 @@ export default {
       "SET_IS_LOGIN_VISIBLE"
     ]),
     ...mapActions([
-      "logout"
+      "logout",
+      "loginGoogle"
     ]),
     loginAction: function(){
       if(this.is_logged){
@@ -96,6 +97,16 @@ export default {
     },
     toggleNavBar: function(){
       this.is_navbar_visible = !this.is_navbar_visible
+    }
+  },
+
+  created: function(){
+    if(this.google_code){
+      const code = {
+        'code': this.google_code
+      }
+
+      this.loginGoogle(code)
     }
   }
 

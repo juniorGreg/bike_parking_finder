@@ -18,7 +18,14 @@ from dj_rest_auth.registration.views import RegisterView
 # Create your views here.
 def index(request):
     context = {"static_url": settings.STATIC_URL, "google_recaptcha_site": settings.GOOGLE_RECAPCHAV3_SITE}
-    print(context)
+    #print(context)
+    return render(request, "api/index.html", context)
+
+def google_callback(request):
+    code = request.GET.get("code")
+
+    context = {"static_url": settings.STATIC_URL, "google_recaptcha_site": settings.GOOGLE_RECAPCHAV3_SITE, "google_code": code}
+    #print(context)
     return render(request, "api/index.html", context)
 
 

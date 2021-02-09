@@ -28,12 +28,12 @@
           </div>
           <div class="navbar-end">
             <div class="navbar-item">
-              <button @click="loginAction" class="button is-success">{{login_button_text}}</button>
+              <button @click="loginAction" class="button" :class="login_class">{{login_button_text}}</button>
             </div>
           </div>
         </div>
     </nav>
-    <LoginModal :google_login_url="google_login_url"></LoginModal>
+    <LoginModal :google_login_url="google_login_url" :facebook_login_url="facebook_login_url"></LoginModal>
     <RegisterModal :google_recaptcha_site="google_recaptcha_site"></RegisterModal>
     <main>
 
@@ -57,7 +57,7 @@ import { mapState , mapMutations , mapActions } from 'vuex';
 
 export default {
   name: 'App',
-  props: ["logo", "google_recaptcha_site", "google_login_url", "google_code"],
+  props: ["logo", "google_recaptcha_site", "google_login_url", "google_code", "facebook_login_url", "facebook_code"],
   components : {
     LMap,
     LoginModal,
@@ -78,6 +78,14 @@ export default {
       }else {
           return "Login"
       }
+    },
+
+    login_class: function(){
+      if(this.is_logged){
+          return "is-danger"
+      }else {
+          return "is-success"
+      }
     }
   },
   methods: {
@@ -86,7 +94,9 @@ export default {
     ]),
     ...mapActions([
       "logout",
-      "loginGoogle"
+      "loginGoogle",
+      "loginFacebook",
+      "checkLoginState"
     ]),
     loginAction: function(){
       if(this.is_logged){
@@ -101,12 +111,22 @@ export default {
   },
 
   created: function(){
+    this.checkLoginState()
+
     if(this.google_code){
       const code = {
         'code': this.google_code
       }
 
       this.loginGoogle(code)
+    }
+
+    if(this.facebook_code){
+      const code = {
+        'code': this.facebook_code
+      }
+
+      this.loginFacebook(code)
     }
   }
 

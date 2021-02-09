@@ -7,26 +7,46 @@ from .serializers import BikeParkingSerializer
 from django.contrib.gis.measure import Distance, D
 from django.contrib.gis.geos import Point
 from django.conf import settings
+from django.shortcuts import redirect
 
-from allauth.account import app_settings as allauth_settings
-from dj_rest_auth.utils import jwt_encode
-from allauth.account.utils import complete_signup
-from dj_rest_auth.app_settings import create_token
+from allauth.socialaccount.models import SocialLogin
 
-from dj_rest_auth.registration.views import RegisterView
 
 # Create your views here.
 def index(request):
-    context = {"static_url": settings.STATIC_URL, "google_recaptcha_site": settings.GOOGLE_RECAPCHAV3_SITE}
+    context = {}
+
+    if "google_code" in request.session:
+        context["google_code"] = request.session["google_code"]
+
+    if "facebook_code" in request.session:
+        context["facebook_code"] = request.session["facebook_code"]
+
+
+    context["static_url"] = settings.STATIC_URL
+    context["google_recaptcha_site"] = settings.GOOGLE_RECAPCHAV3_SITE
     #print(context)
     return render(request, "api/index.html", context)
 
 def google_callback(request):
     code = request.GET.get("code")
 
-    context = {"static_url": settings.STATIC_URL, "google_recaptcha_site": settings.GOOGLE_RECAPCHAV3_SITE, "google_code": code}
+    request.session["google_code"] = code
     #print(context)
-    return render(request, "api/index.html", context)
+    return redirect("index")
+
+def facebook_callback(request):
+    code = request.GET.get("code")
+
+    request.session["facebook_code"] = code
+    #print(context)
+    return redirect("index")
+
+
+def social_signup(request):
+    user = SocialLogin.deserialize(request.session["socialaccount_sociallogin"])
+
+    return render(request, 'api/socialaccount_signup.html')
 
 
 @api_view(['GET'])

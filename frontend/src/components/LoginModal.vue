@@ -31,7 +31,7 @@
           </div>
           <a class="button is-danger is-fullwidth" :href="google_login_url" >S'authentifier avec Google</a>
           <br>
-          <button class="button is-link is-fullwidth" type="button" name="button">S'authentifier avec Facebook</button>
+          <a class="button is-link is-fullwidth" :href="facebook_login_url" >S'authentifier avec Facebook</a>
 
       </div>
 
@@ -44,7 +44,7 @@
 <script>
 import { mapState , mapMutations , mapActions } from 'vuex';
 export default {
-  props: ["google_login_url"],
+  props: ["google_login_url" , "facebook_login_url"],
   data: function(){
     return {
       email: "",

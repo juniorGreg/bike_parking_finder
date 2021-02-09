@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 
-from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
+from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter, oauth2_login as fb_auth2_login
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter, oauth2_login
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from api.views import confirm_email
@@ -26,11 +26,15 @@ from dj_rest_auth.registration.views import VerifyEmailView, RegisterView
 
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
+    authentication_classes = []
+    callback_url = "https://moisidev.xyz/callback/facebook"
+    client_class = OAuth2Client
+
 
 class GoogleLogin(SocialLoginView):
     authentication_classes = []
     adapter_class = GoogleOAuth2Adapter
-    callback_url = "http://moisidev.xyz/callback/google"
+    callback_url = "https://moisidev.xyz/callback/google"
     client_class = OAuth2Client
 
 urlpatterns = [
@@ -39,6 +43,7 @@ urlpatterns = [
 
     path('auth/', include('dj_rest_auth.urls'), name="e_login"),
     path("auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
+    path("auth/facebook/oauth", fb_auth2_login, name="facebook_login"),
     path("auth/google/", GoogleLogin.as_view(), name="g_login"),
     path("auth/google/oauth", oauth2_login, name="google_login"),
     path('auth/register/', RegisterView.as_view(), name="register"),

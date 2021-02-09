@@ -46,6 +46,8 @@ export default new Vuex.Store({
     },
     SET_TOKEN_KEY: (state, new_value) => {
       state.token_key = new_value
+      localStorage.setItem("BikeToken", new_value)
+
     }
   },
   actions: {
@@ -81,15 +83,39 @@ export default new Vuex.Store({
       })
     },
 
+    checkLoginState: (context) => {
+      const token = localStorage.getItem("BikeToken")
+
+      if(token){
+        context.commit("SET_IS_LOGGED", true)
+        context.commit("SET_TOKEN_KEY", token)
+      }
+
+    },
+
     login: (context, loginForm) => {
       return axios.post("/auth/login/", loginForm).then( response => {
         context.commit("SET_IS_LOGGED", true)
         context.commit("SET_TOKEN_KEY", response.data.key)
+
       })
     },
 
     loginGoogle: (context, code)=> {
+      if(context.state.is_logged)
+        return;
       return axios.post("/auth/google/", code).then( response => {
+        context.commit("SET_IS_LOGGED", true)
+        context.commit("SET_TOKEN_KEY", response.data.key)
+      }).catch(error => {
+        console.log(error.response.data)
+      })
+    },
+
+    loginFacebook: (context, code)=> {
+      if(context.state.is_logged)
+        return;
+      return axios.post("/auth/facebook/", code).then( response => {
         context.commit("SET_IS_LOGGED", true)
         context.commit("SET_TOKEN_KEY", response.data.key)
       }).catch(error => {
@@ -101,6 +127,7 @@ export default new Vuex.Store({
       return axios.post("/auth/logout/",null,context.getters.headers).then(response => {
         context.commit("SET_IS_LOGGED", false)
         context.commit("SET_TOKEN_KEY", null)
+        localStorage.removeItem("BikeToken")
       })
     },
 

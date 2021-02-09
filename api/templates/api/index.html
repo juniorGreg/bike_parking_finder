@@ -27,7 +27,6 @@
     <meta name="description" property="og:description" content="Bienvenue sur le site de ParkMonBaïk ! C'est un site web qui permet de chercher et d'ajouter des emplacements pour stationner votre vélo à Montréal"/>
     <script src="https://www.google.com/recaptcha/api.js"></script>
 
-
     <title>ParkMonBaïk</title>
   </head>
   <body>
@@ -35,7 +34,9 @@
       <App  logo="{% static 'parkmonbaik.svg' %}"
             google_recaptcha_site="{{ google_recaptcha_site }}"
             google_login_url="{% provider_login_url 'google' %}"
-            google_code="{{ google_code }}"></App>
+            facebook_login_url="{% provider_login_url 'facebook' method='oauth2' %}"
+            google_code="{{ google_code }}"
+            facebook_code="{{ facebook_code }}"></App>
     </div>
     <script type="text/javascript" src="{% static 'main.js' %}"></script>
     <script type="text/javascript">

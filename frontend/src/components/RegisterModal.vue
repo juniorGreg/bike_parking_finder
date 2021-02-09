@@ -10,6 +10,12 @@
 
         <form ref="registerForm">
 
+          <div class="field">
+            <label class="label" for="username">Nom d'utilisateur</label>
+            <div class="control">
+                <input class="input" v-model="username" type="text" name="username" minlength="3" required>
+            </div>
+          </div>
 
             <div class="field">
               <label class="label" for="email">Courriel</label>
@@ -63,6 +69,7 @@ export default {
 
   data: function(){
     return {
+      username: "",
       email: "",
       password1: "",
       password2: ""
@@ -95,6 +102,7 @@ export default {
       if(this.$refs.registerForm.reportValidity()){
         console.log(token)
         const registerForm = {
+          username: this.username,
           email: this.email,
           password1: this.password1,
           password2: this.password2,
@@ -102,7 +110,7 @@ export default {
         }
 
         this.register(registerForm)
-
+        this.username=""
         this.email=""
         this.password1=""
         this.password2=""

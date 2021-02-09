@@ -165,14 +165,22 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "confirm_email"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "confirm_email"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'SCOPE': ['profile','email'],
+        'SCOPE': ['email', 'profile'],
         'AUTH_PARAMS': {
             'access_type': 'online'
         }
+    },
+
+    "facebook": {
+        'SCOPE': ['email','public_profile'],
+        'VERIFIED_EMAIL': True
     }
 }
 

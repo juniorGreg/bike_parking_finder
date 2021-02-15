@@ -8,8 +8,14 @@ from django.contrib.gis.measure import Distance, D
 from django.contrib.gis.geos import Point
 from django.conf import settings
 from django.shortcuts import redirect
+from django.http import StreamingHttpResponse
 
 from allauth.socialaccount.models import SocialLogin
+from time import sleep
+import redis
+import json
+
+redis_client = redis.Redis(host="localhost", port=6379)
 
 
 # Create your views here.
@@ -43,10 +49,21 @@ def facebook_callback(request):
     return redirect("index")
 
 
-def social_signup(request):
-    user = SocialLogin.deserialize(request.session["socialaccount_sociallogin"])
+def event_heatmap():
+    init_heatmap_data = redis_client.lrange("heatmap_data", 0, -1)
+    yield "data: %s\n\n" % init_heatmap_data
+    sub = redis_client.pubsub()
+    sub.subscribe("heatmap")
+    while True:
+        update_heatmap = sub.get_message()
+        if update_heatmap and not update_heatmap['data'] == 1:
+            yield 'data: %s\n\n' % update_heatmap["data"].decode("utf-8")
 
-    return render(request, 'api/socialaccount_signup.html')
+
+
+def heatmap(request):
+    response = StreamingHttpResponse(event_heatmap(), content_type='text/event-stream')
+    return response
 
 
 @api_view(['GET'])
@@ -56,6 +73,16 @@ def bike_parkings(request):
     lng = float(request.GET.get("lat", "-73.567256"))
     point = Point(lat, lng)
     bike_parkings = BikeParking.objects.filter(position__distance_lte=(point, D(m=distance)))
+
+    heatmap_data = [json.dumps(bike_parking.lat_lng) for bike_parking in bike_parkings]
+
+    for bike_parking in heatmap_data:
+        #print(bike_parking)
+        redis_client.lpush("heatmap_data", bike_parking)
+        redis_client.publish("heatmap", bike_parking)
+        redis_client.ltrim("heatmap_data", 0, 999)
+
+
     serializer = BikeParkingSerializer(bike_parkings, many=True)
     return Response(serializer.data)
 

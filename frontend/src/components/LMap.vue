@@ -9,6 +9,7 @@
 <script>
 import L from 'leaflet';
 import { mapState , mapMutations , mapActions } from 'vuex';
+import HeatmapOverlay from 'heatmap.js/plugins/leaflet-heatmap/leaflet-heatmap.js';
 
 import MarkerPopup from "./MarkerPopup.vue"
 
@@ -25,7 +26,9 @@ export default {
       center: null,
       map: null,
       tileLayer: null,
-      parkingsLayer: null
+      parkingsLayer: null,
+      heatmapLayer: null,
+      heatmapEventSource: null
     }
   },
 
@@ -37,7 +40,8 @@ export default {
       ...mapState([
         "coords",
         "bike_parkings",
-        "radius"
+        "radius",
+        "heatmap_data"
       ]),
 
       circle: function(){
@@ -59,11 +63,32 @@ export default {
 
     this.parkingsLayer = L.layerGroup(this.lmarkers).addTo(this.map)
 
+    //heatmap
+    const cfg = {
+      'radius': 2,
+      'maxOpacity': 0.8,
+      'scaleRadius': true,
+      'useLocalExtrema': true,
+      latField: 'lat',
+      lngField: 'lng',
+      valueField: 'count'
+    }
+
+
+    this.heatmapLayer = new HeatmapOverlay(cfg).addTo(this.map);
+    this.heatmapLayer.setData(this.heatmap_data);
+
     this.map.on("click", this.map_click);
     this.getLocation();
   },
 
   created: function() {
+    this.heatmapEventSource = new EventSource("/heatmap");
+
+    this.heatmapEventSource.onmessage = function(e){
+      console.log("data")
+      console.log(e.data);
+    }
     //this.getLocation()
   },
   methods: {

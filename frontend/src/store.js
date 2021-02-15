@@ -11,6 +11,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: () => ({
     bike_parkings: [],
+    heatmap_data: {
+      max: 15,
+      data: [{lat: 45.501688, lng: -73.567256, count: 10}]
+    },
     coords: [45.501688, -73.567256],
     radius: 500,
     is_logged: false,
@@ -47,6 +51,8 @@ export default new Vuex.Store({
     SET_TOKEN_KEY: (state, new_value) => {
       state.token_key = new_value
       localStorage.setItem("BikeToken", new_value)
+    },
+    UPDATE_HEATMAP_DATA: (state, new_data) => {
 
     }
   },

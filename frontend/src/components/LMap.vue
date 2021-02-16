@@ -9,7 +9,8 @@
 <script>
 import L from 'leaflet';
 import { mapState , mapMutations , mapActions } from 'vuex';
-import HeatmapOverlay from 'heatmap.js/plugins/leaflet-heatmap/leaflet-heatmap.js';
+
+import "../leaflet-heat.js"
 
 import MarkerPopup from "./MarkerPopup.vue"
 
@@ -28,7 +29,8 @@ export default {
       tileLayer: null,
       parkingsLayer: null,
       heatmapLayer: null,
-      heatmapEventSource: null
+      heatmapEventSource: null,
+      heatmap_data: []
     }
   },
 
@@ -40,13 +42,44 @@ export default {
       ...mapState([
         "coords",
         "bike_parkings",
-        "radius",
-        "heatmap_data"
+        "radius"
       ]),
 
       circle: function(){
         return L.circle(this.coords, this.radius)
       }
+  },
+
+  methods: {
+    ...mapActions([
+      "getLocation",
+      "getBikeParkings"
+    ]),
+
+    ...mapMutations([
+        "SET_COORDS",
+
+    ]),
+
+    map_click: function(e){
+      this.SET_COORDS([e.latlng.lat, e.latlng.lng]);
+    },
+
+    update_heatmap: function(e){
+      const new_heatmap_data = JSON.parse(e.data);
+
+      console.log(new_heatmap_data);
+
+      new_heatmap_data.forEach((item,index)=>{
+          item.push(1)
+          this.heatmapLayer.addLatLng(item)
+      })
+
+
+
+      //heatmapLayer.setData(new_heatmap_data)
+
+    }
   },
 
   mounted: function() {
@@ -56,56 +89,39 @@ export default {
       center: this.coords,
       zoom: 15}
     );
-    this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
+    this.tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map)
     this.center.addTo(this.map);
 
 
 
     this.parkingsLayer = L.layerGroup(this.lmarkers).addTo(this.map)
+    this.heatmapLayer = L.heatLayer([],
+    {
+      radius: 25,
+      max: 30,
 
-    //heatmap
-    const cfg = {
-      'radius': 2,
-      'maxOpacity': 0.8,
-      'scaleRadius': true,
-      'useLocalExtrema': true,
-      latField: 'lat',
-      lngField: 'lng',
-      valueField: 'count'
-    }
+    }).addTo(this.map)
 
-
-    this.heatmapLayer = new HeatmapOverlay(cfg).addTo(this.map);
-    this.heatmapLayer.setData(this.heatmap_data);
 
     this.map.on("click", this.map_click);
+
     this.getLocation();
+
+    //connect heatmap data
+    this.heatmapEventSource = new EventSource("/heatmap");
+
+
+
+    this.heatmapEventSource.onmessage = this.update_heatmap
   },
 
   created: function() {
-    this.heatmapEventSource = new EventSource("/heatmap");
 
-    this.heatmapEventSource.onmessage = function(e){
-      console.log("data")
-      console.log(e.data);
-    }
     //this.getLocation()
   },
-  methods: {
-    ...mapActions([
-      "getLocation",
-      "getBikeParkings"
-    ]),
 
-    ...mapMutations([
-        "SET_COORDS"
-    ]),
-
-    map_click: function(e){
-      this.SET_COORDS([e.latlng.lat, e.latlng.lng]);
-
-    }
-  },
   watch: {
     bike_parkings: function(){
 

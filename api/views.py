@@ -34,12 +34,14 @@ def index(request):
     #print(context)
     return render(request, "api/index.html", context)
 
+
 def google_callback(request):
     code = request.GET.get("code")
 
     request.session["google_code"] = code
     #print(context)
     return redirect("index")
+
 
 def facebook_callback(request):
     code = request.GET.get("code")
@@ -51,14 +53,14 @@ def facebook_callback(request):
 
 def event_heatmap():
     init_heatmap_data = redis_client.lrange("heatmap_data", 0, -1)
-    yield "data: %s\n\n" % init_heatmap_data
+    init_heatmap_data = [json.loads(data) for data in init_heatmap_data]
+    yield "data: %s\n\n" % json.dumps(init_heatmap_data)
     sub = redis_client.pubsub()
     sub.subscribe("heatmap")
     while True:
         update_heatmap = sub.get_message()
         if update_heatmap and not update_heatmap['data'] == 1:
             yield 'data: %s\n\n' % update_heatmap["data"].decode("utf-8")
-
 
 
 def heatmap(request):
@@ -74,17 +76,21 @@ def bike_parkings(request):
     point = Point(lat, lng)
     bike_parkings = BikeParking.objects.filter(position__distance_lte=(point, D(m=distance)))
 
-    heatmap_data = [json.dumps(bike_parking.lat_lng) for bike_parking in bike_parkings]
+    heatmap_data = [bike_parking.lat_lng for bike_parking in bike_parkings]
 
     for bike_parking in heatmap_data:
         #print(bike_parking)
-        redis_client.lpush("heatmap_data", bike_parking)
-        redis_client.publish("heatmap", bike_parking)
+        redis_client.lpush("heatmap_data", json.dumps(bike_parking))
         redis_client.ltrim("heatmap_data", 0, 999)
+
+    if len(heatmap_data) > 0:
+        redis_client.publish("heatmap", json.dumps(heatmap_data))
+
 
 
     serializer = BikeParkingSerializer(bike_parkings, many=True)
     return Response(serializer.data)
+
 
 def confirm_email(request, key):
     context = {

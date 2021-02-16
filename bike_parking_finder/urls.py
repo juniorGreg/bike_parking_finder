@@ -48,7 +48,6 @@ urlpatterns = [
     path("auth/google/oauth", oauth2_login, name="google_login"),
     path('auth/register/', RegisterView.as_view(), name="register"),
     path('auth/register/verify-email/', VerifyEmailView.as_view(), name="verify_email"),
-    re_path(r'^auth/register/account-confirm-email/(?P<key>[-:\w]+)/$', confirm_email,
-        name='account_confirm_email'),
+    re_path(r'^auth/register/account-confirm-email/(?P<key>[-:\w]+)/$', confirm_email, name='account_confirm_email'),
 
 ]

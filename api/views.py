@@ -16,7 +16,7 @@ import redis
 import json
 import traceback
 
-redis_client = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
+redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD, ssl=True, ssl_cert_reqs=None)
 
 
 # Create your views here.

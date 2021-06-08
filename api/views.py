@@ -14,13 +14,15 @@ from allauth.socialaccount.models import SocialLogin
 from time import sleep
 import redis
 import json
+import traceback
 
-redis_client = redis.Redis(host="localhost", port=6379)
+redis_client = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, password=settings.REDIS_PASSWORD)
 
 
 # Create your views here.
 def index(request):
     context = {}
+    request.session.set_expiry(300)
 
     if "google_code" in request.session:
         context["google_code"] = request.session["google_code"]
@@ -52,15 +54,18 @@ def facebook_callback(request):
 
 
 def event_heatmap():
-    init_heatmap_data = redis_client.lrange("heatmap_data", 0, -1)
-    init_heatmap_data = [json.loads(data) for data in init_heatmap_data]
-    yield "data: %s\n\n" % json.dumps(init_heatmap_data)
-    sub = redis_client.pubsub()
-    sub.subscribe("heatmap")
-    while True:
-        update_heatmap = sub.get_message()
-        if update_heatmap and not update_heatmap['data'] == 1:
-            yield 'data: %s\n\n' % update_heatmap["data"].decode("utf-8")
+    try:
+        init_heatmap_data = redis_client.lrange("heatmap_data", 0, -1)
+        init_heatmap_data = [json.loads(data) for data in init_heatmap_data]
+        yield "data: %s\n\n" % json.dumps(init_heatmap_data)
+        sub = redis_client.pubsub()
+        sub.subscribe("heatmap")
+        while True:
+            update_heatmap = sub.get_message()
+            if update_heatmap and not update_heatmap['data'] == 1:
+                yield 'data: %s\n\n' % update_heatmap["data"].decode("utf-8")
+    except:
+        traceback.print_exc()
 
 
 def heatmap(request):
@@ -80,11 +85,18 @@ def bike_parkings(request):
 
     for bike_parking in heatmap_data:
         #print(bike_parking)
-        redis_client.lpush("heatmap_data", json.dumps(bike_parking))
-        redis_client.ltrim("heatmap_data", 0, 999)
+        try:
+            redis_client.lpush("heatmap_data", json.dumps(bike_parking))
+            redis_client.ltrim("heatmap_data", 0, 999)
+        except:
+            traceback.print_exc()
 
     if len(heatmap_data) > 0:
-        redis_client.publish("heatmap", json.dumps(heatmap_data))
+        try:
+            redis_client.publish("heatmap", json.dumps(heatmap_data))
+        except:
+            traceback.print_exc()
+
 
 
 

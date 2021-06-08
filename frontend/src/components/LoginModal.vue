@@ -2,7 +2,7 @@
   <section class="modal" :class="{'is-active': is_login_visible}">
     <div class="modal-background"></div>
     <div class="modal-content is-success">
-      <div class="box is-success">
+      <div class="box is-success" id="loginbox">
 
           <h2 class="title is-3">S'authentifier</h2>
 

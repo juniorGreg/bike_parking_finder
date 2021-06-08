@@ -20,3 +20,7 @@ main {
   height: 100vh;
   z-index: -1;
 }
+ #loginbox {
+   pointer-events: none;
+   filter: grayscale(1);
+ }

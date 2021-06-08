@@ -19,7 +19,7 @@
               <div class="navbar-dropdown">
                 <div class="navbar-item">
                   <div class="field">
-                    <input id="modeRealTime" type="checkbox" name="modeRealTime" class="switch">
+                    <input id="modeRealTime" type="checkbox" name="modeRealTime" class="switch" disabled>
                     <label for="modeRealTime">Off</label>
                   </div>
                 </div>

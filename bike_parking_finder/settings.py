@@ -93,6 +93,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bike_parking_finder.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
@@ -106,11 +112,7 @@ if not DEBUG:
             'rest_framework.renderers.JSONRenderer',
         )
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
+
 
 SITE_ID = 1
 

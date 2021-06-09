@@ -68,8 +68,6 @@ export default {
     update_heatmap: function(e){
       const new_heatmap_data = JSON.parse(e.data);
 
-      console.log(new_heatmap_data);
-
       new_heatmap_data.forEach((item,index)=>{
           item.push(1)
           this.heatmapLayer.addLatLng(item)
@@ -100,7 +98,7 @@ export default {
     this.heatmapLayer = L.heatLayer([],
     {
       radius: 25,
-      max: 30,
+      max: 10,
 
     }).addTo(this.map)
 
@@ -150,7 +148,6 @@ export default {
     },
 
     coords: function(){
-      console.log("coord");
       this.map.panTo(this.coords)
       this.center.setLatLng(this.coords)
       this.getBikeParkings()
